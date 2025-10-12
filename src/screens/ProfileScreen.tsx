@@ -12,7 +12,9 @@ import {
   Switch,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { theme } from '../theme/theme';
+import { themes } from '../theme/theme';
+import { useAppTheme } from '../theme/ThemeProvider';
+const theme = themes.light;
 
 const { width } = Dimensions.get('window');
 const POST_SIZE = (width - theme.spacing.md * 2 - theme.spacing.xs * 2) / 3;
@@ -50,9 +52,8 @@ const MOCK_PROFILE: UserProfile = {
 
 const MOCK_POSTS: UserPost[] = Array.from({ length: 12 }, (_, index) => ({
   id: `post-${index + 1}`,
-  image: `https://via.placeholder.com/${POST_SIZE}x${POST_SIZE}/${
-    ['FF5A5F', '007AFF', '42B883', 'F39C12', 'E74C3C', '9B59B6'][index % 6]
-  }/FFFFFF?text=${index + 1}`,
+  image: `https://via.placeholder.com/${POST_SIZE}x${POST_SIZE}/${['FF5A5F', '007AFF', '42B883', 'F39C12', 'E74C3C', '9B59B6'][index % 6]
+    }/FFFFFF?text=${index + 1}`,
   likes: Math.floor(Math.random() * 200) + 50,
   comments: Math.floor(Math.random() * 50) + 5,
 }));
@@ -90,10 +91,15 @@ const SettingsItem: React.FC<SettingsItemProps> = ({
   </TouchableOpacity>
 );
 
-const ProfileScreen: React.FC = () => {
+interface ProfileScreenProps {
+  navigation?: any;
+}
+
+const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
   const [showSettings, setShowSettings] = useState(false);
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [privateAccount, setPrivateAccount] = useState(false);
+  const { mode: themeMode, setMode } = useAppTheme();
 
   const formatNumber = (num: number): string => {
     if (num >= 1000000) {
@@ -128,7 +134,7 @@ const ProfileScreen: React.FC = () => {
         <View style={styles.avatarContainer}>
           <Image source={{ uri: MOCK_PROFILE.avatar }} style={styles.avatar} />
         </View>
-        
+
         <View style={styles.statsContainer}>
           <View style={styles.statItem}>
             <Text style={styles.statNumber}>{formatNumber(MOCK_PROFILE.posts)}</Text>
@@ -138,8 +144,8 @@ const ProfileScreen: React.FC = () => {
             <Text style={styles.statNumber}>{formatNumber(MOCK_PROFILE.contacts)}</Text>
             <Text style={styles.statLabel}>Contacts</Text>
           </View>
-        
-         {/* <View style={styles.statItem}>
+
+          {/* <View style={styles.statItem}>
             <Text style={styles.statNumber}>{formatNumber(MOCK_PROFILE.followers)}</Text>
             <Text style={styles.statLabel}>Followers</Text>
           </View>
@@ -162,7 +168,10 @@ const ProfileScreen: React.FC = () => {
       </View>
 
       <View style={styles.actionButtons}>
-        <TouchableOpacity style={styles.editButton}>
+        <TouchableOpacity
+          style={styles.editButton}
+          onPress={() => navigation?.navigate('EditProfile')}
+        >
           <Text style={styles.editButtonText}>Edit Profile</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -178,15 +187,15 @@ const ProfileScreen: React.FC = () => {
   const SettingsSection = () => (
     <View style={styles.settingsSection}>
       <Text style={styles.sectionTitle}>Settings</Text>
-      
+
       <View style={styles.settingsGroup}>
         <Text style={styles.settingsGroupTitle}>Account</Text>
-        <SettingsItem
+        {/* <SettingsItem
           icon="person-outline"
           title="Edit Profile"
           subtitle="Change your profile information"
           onPress={() => console.log('Edit Profile')}
-        />
+        /> */}
         <SettingsItem
           icon="lock-closed-outline"
           title="Privacy"
@@ -231,6 +240,28 @@ const ProfileScreen: React.FC = () => {
           subtitle="Receive updates via email"
           onPress={() => console.log('Email Notifications')}
         />
+        <View style={{ height: 12 }} />
+        <Text style={styles.settingsGroupTitle}>Appearance</Text>
+        <View style={styles.themeToggleWrap}>
+          <TouchableOpacity
+            style={[styles.themeOption, themeMode === 'light' && styles.themeOptionActive]}
+            onPress={() => setMode('light')}
+          >
+            <Text style={[styles.themeOptionText, themeMode === 'light' && styles.themeOptionTextActive]}>Light</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.themeOption, themeMode === 'dark' && styles.themeOptionActive]}
+            onPress={() => setMode('dark')}
+          >
+            <Text style={[styles.themeOptionText, themeMode === 'dark' && styles.themeOptionTextActive]}>Dark</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.themeOption, themeMode === 'solarized' && styles.themeOptionActive]}
+            onPress={() => setMode('solarized')}
+          >
+            <Text style={[styles.themeOptionText, themeMode === 'solarized' && styles.themeOptionTextActive]}>Solarized</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       <View style={styles.settingsGroup}>
@@ -283,7 +314,7 @@ const ProfileScreen: React.FC = () => {
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         <ProfileHeader />
-        
+
         {showSettings ? (
           <SettingsSection />
         ) : (
@@ -294,7 +325,7 @@ const ProfileScreen: React.FC = () => {
                 <Ionicons name="grid-outline" size={20} color={theme.colors.text.primary} />
               </TouchableOpacity>
             </View>
-            
+
             <FlatList
               data={MOCK_POSTS}
               keyExtractor={item => item.id}
@@ -530,6 +561,31 @@ const styles = StyleSheet.create({
     borderRadius: theme.borderRadius.md,
     backgroundColor: theme.colors.surface,
     width: '90%',
+  },
+  themeToggleWrap: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: theme.spacing.md,
+    marginBottom: theme.spacing.lg,
+  },
+  themeOption: {
+    flex: 1,
+    marginHorizontal: theme.spacing.xs,
+    paddingVertical: theme.spacing.sm,
+    borderRadius: theme.borderRadius.md,
+    backgroundColor: theme.colors.surface,
+    alignItems: 'center',
+  },
+  themeOptionActive: {
+    backgroundColor: theme.colors.primary,
+  },
+  themeOptionText: {
+    ...theme.typography.body,
+    color: theme.colors.text.primary,
+  },
+  themeOptionTextActive: {
+    color: theme.colors.text.white,
+    fontWeight: '700',
   },
   logoutText: {
     ...theme.typography.body,

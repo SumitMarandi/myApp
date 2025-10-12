@@ -3,16 +3,19 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Ionicons } from '@expo/vector-icons';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import FeedScreen from '../screens/FeedScreen';
 import ChatsScreen from '../screens/ChatsScreen';
 import ConversationScreen from '../screens/ConversationScreen';
 import StoriesScreen from '../screens/StoriesScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import EditProfileScreen from '../screens/EditProfileScreen';
 import PostUploadScreen from '../screens/PostUploadScreen';
 import NotificationsScreen from '../screens/NotificationsScreen';
-import { theme } from '../theme/theme';
+import { themes } from '../theme/theme';
+const theme = themes.light;
+import { AppThemeProvider } from '../theme/ThemeProvider';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -37,9 +40,20 @@ const ChatStack = () => {
   );
 };
 
+// Profile Stack Navigator
+const ProfileStack = () => {
+  return (
+    <Stack.Navigator id={undefined} screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="ProfileMain" component={ProfileScreen} />
+      <Stack.Screen name="EditProfile" component={EditProfileScreen} />
+    </Stack.Navigator>
+  );
+};
+
 const AppNavigator: React.FC = () => {
   return (
-    <NavigationContainer>
+    <AppThemeProvider>
+      <NavigationContainer>
       <Tab.Navigator id={undefined} initialRouteName="Chats"
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
@@ -72,9 +86,10 @@ const AppNavigator: React.FC = () => {
         <Tab.Screen name="Chats" component={ChatStack} />
         <Tab.Screen name="Upload" component={PostUploadScreen} />
         <Tab.Screen name="Stories" component={StoriesScreen} />
-        <Tab.Screen name="Profile" component={ProfileScreen} />
+        <Tab.Screen name="Profile" component={ProfileStack} />
       </Tab.Navigator>
-    </NavigationContainer>
+      </NavigationContainer>
+    </AppThemeProvider>
   );
 };
 

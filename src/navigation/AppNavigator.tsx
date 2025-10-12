@@ -11,6 +11,9 @@ import ConversationScreen from '../screens/ConversationScreen';
 import StoriesScreen from '../screens/StoriesScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import EditProfileScreen from '../screens/EditProfileScreen';
+import SettingsScreen from '../screens/SettingsScreen';
+import HelpCenterScreen from '../screens/HelpCenterScreen';
+import AboutScreen from '../screens/AboutScreen';
 import PostUploadScreen from '../screens/PostUploadScreen';
 import NotificationsScreen from '../screens/NotificationsScreen';
 import { themes } from '../theme/theme';
@@ -46,6 +49,9 @@ const ProfileStack = () => {
     <Stack.Navigator id={undefined} screenOptions={{ headerShown: false }}>
       <Stack.Screen name="ProfileMain" component={ProfileScreen} />
       <Stack.Screen name="EditProfile" component={EditProfileScreen} />
+      <Stack.Screen name="Settings" component={SettingsScreen} />
+      <Stack.Screen name="HelpCenter" component={HelpCenterScreen} />
+      <Stack.Screen name="About" component={AboutScreen} />
     </Stack.Navigator>
   );
 };
@@ -100,11 +106,13 @@ const styles = StyleSheet.create({
     borderTopColor: theme.colors.border,
     paddingTop: theme.spacing.xs,
     paddingBottom: theme.spacing.xs,
-    height: 75,
+    height: 80,
     ...theme.shadows.sm,
+    paddingEnd: 10,
+    paddingStart: 10,
   },
   tabLabel: {
-    fontSize: 10,
+    fontSize: 13,
     fontWeight: '500',
     marginTop: 2,
   },

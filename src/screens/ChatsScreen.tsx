@@ -206,10 +206,13 @@ const styles = StyleSheet.create({
     paddingVertical: theme.spacing.sm,
     borderBottomWidth: 1,
     borderBottomColor: theme.colors.border,
+    paddingTop: theme.spacing.md,
+    paddingBottom: theme.spacing.md,
   },
   headerTitle: {
     ...theme.typography.h1,
     color: theme.colors.text.primary,
+    fontSize: 24,
   },
   searchContainer: {
     paddingHorizontal: theme.spacing.md,

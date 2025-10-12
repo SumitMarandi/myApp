@@ -14,7 +14,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { theme } from '../theme/theme';
 import { PostSkeleton, StorySkeleton } from '../components/SkeletonLoader';
 
-
 /* interface Story {
   id: string;
   username: string;
@@ -47,7 +46,7 @@ const MOCK_POSTS: Post[] = [
     id: '1',
     username: 'alex_photo',
     avatar: '../../assets/owl.png',
-    image: '../../assets/sumitmarandi.png?text=Sunset+View',
+    image: '../../assets/owl.png',
     caption: 'Amazing sunset today! 🌅 #photography #nature',
     likes: 124,
     comments: 23,

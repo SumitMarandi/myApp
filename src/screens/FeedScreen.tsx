@@ -14,12 +14,13 @@ import { Ionicons } from '@expo/vector-icons';
 import { theme } from '../theme/theme';
 import { PostSkeleton, StorySkeleton } from '../components/SkeletonLoader';
 
-interface Story {
+
+/* interface Story {
   id: string;
   username: string;
   avatar: string;
   hasUnreadStory: boolean;
-}
+} */
 
 interface Post {
   id: string;
@@ -33,20 +34,20 @@ interface Post {
   isLiked: boolean;
 }
 
-const MOCK_STORIES: Story[] = [
-  { id: '1', username: 'Your Story', avatar: 'https://via.placeholder.com/70x70/007AFF/FFFFFF?text=+', hasUnreadStory: false },
-  { id: '2', username: 'alex_photo', avatar: 'https://via.placeholder.com/70x70/FF5A5F/FFFFFF?text=A', hasUnreadStory: true },
-  { id: '3', username: 'maria.design', avatar: 'https://via.placeholder.com/70x70/42B883/FFFFFF?text=M', hasUnreadStory: true },
-  { id: '4', username: 'john_dev', avatar: 'https://via.placeholder.com/70x70/F39C12/FFFFFF?text=J', hasUnreadStory: false },
-  { id: '5', username: 'sarah_ui', avatar: 'https://via.placeholder.com/70x70/E74C3C/FFFFFF?text=S', hasUnreadStory: true },
-];
+/* const MOCK_STORIES: Story[] = [
+  { id: '1', username: 'Your Story', avatar: '../../assets/sumitmarandi.png?text=+', hasUnreadStory: false },
+  { id: '2', username: 'alex_photo', avatar: '../../assets/sumitmarandi.png?text=A', hasUnreadStory: true },
+  { id: '3', username: 'maria.design', avatar: '../../assets/sumitmarandi.png?text=M', hasUnreadStory: true },
+  { id: '4', username: 'john_dev', avatar: '../../assets/sumitmarandi.png?text=J', hasUnreadStory: false },
+  { id: '5', username: 'sarah_ui', avatar: '../../assets/sumitmarandi.png?text=S', hasUnreadStory: true },
+]; */
 
 const MOCK_POSTS: Post[] = [
   {
     id: '1',
     username: 'alex_photo',
-    avatar: 'https://via.placeholder.com/40x40/FF5A5F/FFFFFF?text=A',
-    image: 'https://via.placeholder.com/350x350/007AFF/FFFFFF?text=Beautiful+Sunset',
+    avatar: '../../assets/owl.png',
+    image: '../../assets/sumitmarandi.png?text=Sunset+View',
     caption: 'Amazing sunset today! 🌅 #photography #nature',
     likes: 124,
     comments: 23,
@@ -56,8 +57,8 @@ const MOCK_POSTS: Post[] = [
   {
     id: '2',
     username: 'maria.design',
-    avatar: 'https://via.placeholder.com/40x40/42B883/FFFFFF?text=M',
-    image: 'https://via.placeholder.com/350x350/42B883/FFFFFF?text=UI+Design+Work',
+    avatar: '../../assets/sumitmarandi.png?text=M',
+    image: '../../assets/sumitmarandi.png?text=UI+Design+Work',
     caption: 'Working on some new UI concepts ✨ #design #ui #mobile',
     likes: 89,
     comments: 12,
@@ -67,8 +68,8 @@ const MOCK_POSTS: Post[] = [
   {
     id: '3',
     username: 'john_dev',
-    avatar: 'https://via.placeholder.com/40x40/F39C12/FFFFFF?text=J',
-    image: 'https://via.placeholder.com/350x350/F39C12/FFFFFF?text=Code+Setup',
+    avatar: '../../assets/sumitmarandi.png?text=J',
+    image: '../../assets/sumitmarandi.png?text=Code+Setup',
     caption: 'New development setup complete! 💻 #coding #developer #productivity',
     likes: 67,
     comments: 8,
@@ -77,6 +78,7 @@ const MOCK_POSTS: Post[] = [
   },
 ];
 
+/* 
 const StoryItem: React.FC<{ story: Story }> = ({ story }) => (
   <TouchableOpacity style={styles.storyContainer}>
     <View style={[styles.storyImageContainer, story.hasUnreadStory && styles.unreadStory]}>
@@ -86,7 +88,8 @@ const StoryItem: React.FC<{ story: Story }> = ({ story }) => (
       {story.username}
     </Text>
   </TouchableOpacity>
-);
+); 
+*/
 
 const PostCard: React.FC<{ post: Post; onLikePress: (postId: string) => void }> = ({ post, onLikePress }) => (
   <View style={styles.postCard}>
@@ -181,13 +184,15 @@ const FeedScreen: React.FC<{ navigation?: any }> = ({ navigation }) => {
     [handleLikePress]
   );
 
+  /* 
   const ListHeaderComponent = () => (
     <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.storiesContainer}>
       {MOCK_STORIES.map(story => (
         <StoryItem key={story.id} story={story} />
       ))}
     </ScrollView>
-  );
+  ); 
+  */
 
   const ListFooterComponent = () => (
     isLoading ? (
@@ -211,7 +216,7 @@ const FeedScreen: React.FC<{ navigation?: any }> = ({ navigation }) => {
         data={posts}
         keyExtractor={item => item.id}
         renderItem={renderPost}
-        ListHeaderComponent={ListHeaderComponent}
+        /* ListHeaderComponent={ListHeaderComponent} */
         ListFooterComponent={ListFooterComponent}
         refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
         onEndReached={loadMorePosts}

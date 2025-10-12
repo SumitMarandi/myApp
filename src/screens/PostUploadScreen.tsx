@@ -31,6 +31,30 @@ const PostUploadScreen: React.FC = () => {
   const [isUploading, setIsUploading] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
 
+  const resetForm = () => {
+    setSelectedMedia(null);
+    setCaption('');
+    setShowFilters(false);
+    setIsUploading(false);
+  };
+
+  const handleCancel = () => {
+    const hasUnsaved = !!selectedMedia || caption.trim().length > 0 || showFilters || isUploading;
+    if (!hasUnsaved) {
+      resetForm();
+      return;
+    }
+
+    Alert.alert(
+      'Discard changes?',
+      'You have unsaved changes. Are you sure you want to discard them?',
+      [
+        { text: 'Keep Editing', style: 'cancel' },
+        { text: 'Discard', style: 'destructive', onPress: () => resetForm() },
+      ]
+    );
+  };
+
   const requestPermissions = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== 'granted') {
@@ -109,8 +133,8 @@ const PostUploadScreen: React.FC = () => {
   };
 
   const handlePost = async () => {
-    if (!selectedMedia || !caption.trim()) {
-      Alert.alert('Incomplete', 'Please select media and add a caption');
+    if (!selectedMedia) {
+      Alert.alert('No media selected', 'Please select a photo or video to post');
       return;
     }
 
@@ -206,18 +230,18 @@ const PostUploadScreen: React.FC = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleCancel}>
           <Text style={styles.cancelButton}>Cancel</Text>
         </TouchableOpacity>
         <Text style={styles.headerTitle}>New Post</Text>
         <TouchableOpacity
-          onPress={handlePost}
-          disabled={!selectedMedia || !caption.trim() || isUploading}
+            onPress={handlePost}
+            disabled={!selectedMedia || isUploading}
         >
           <Text
             style={[
               styles.shareButton,
-              (!selectedMedia || !caption.trim() || isUploading) && styles.shareButtonDisabled,
+                (!selectedMedia || isUploading) && styles.shareButtonDisabled,
             ]}
           >
             {isUploading ? 'Sharing...' : 'Share'}
